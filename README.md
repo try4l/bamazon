@@ -28,7 +28,9 @@ There is a Table inside that database called _products_ which has the following 
 
 There were originally 10 different products but the applications allow updating them.
 
-The first app is called *bamazonCustomer.js*. Running this application will first display all of the items available for sale. Include the ids, names, prices of products for sale and now also the product sales totals.
+The first app is called *bamazonCustomer.js*. Running this application first displays the items available for sale. Including the ids, names, prices of products for sale and now also the product sales totals.
+
+![bamazonCustomer1](/images/bamazonCustomer1.png)
 
 The app queries the user first for which product they would like to buy.
 And then for how many units of the product they would like.
