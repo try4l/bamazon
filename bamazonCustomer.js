@@ -27,7 +27,8 @@ connection.connect(function(err) {
 
 function getItemId() {
   // show the user all the items
-  connection.query("SELECT * FROM `products`", function(err, results) {
+  var query = "SELECT * FROM `products`";  
+  connection.query(query, function(err, results) {
     if (err) throw err;
     // once you have the items, prompt the user for which they'd like to buy
     inquirer
@@ -69,14 +70,11 @@ function getProductQty() {
         name: 'qty',
         message: 'What quantity would you like?',
         validate: function (value) {
-          var pass = Number.isInteger(parseInt(value));
           //console.log("value: ", value);
-          //console.log("parseInt(value): ", parseInt(value));
-          //console.log("pass: ", pass);
-          if (pass) {
+          if (isNaN(value)===false) {
             return true;
           }
-        return 'Please enter a number.';
+          return 'Please enter a number.';
         }
       }
     ])
@@ -107,7 +105,7 @@ function checkRemainingStock () {
       connection.query(query, function(err, results) {
         if (err) throw err;
         //console.log("Quantity Updated");
-        console.log("Total Cost: $", currOrderQty * currPrice);
+        console.log("Total Cost: $", (currOrderQty * currPrice).toFixed(2));
         askGoAgain();
       });
 
