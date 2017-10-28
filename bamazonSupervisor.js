@@ -1,13 +1,13 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-// call once somewhere in the beginning of the app
+
 var consoleTable = require("console.table");
 
 // Global vars
 var currItemId = 0;
 var currReorderQty = 0;
 
-// create the connection information for the sql database
+// Connection information for the sql database
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -18,11 +18,10 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
-// connect to the mysql server and sql database
+// Connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
-  // run the start function after the connection is made to prompt the user
-  //start();
+  // After the connection is made, prompt the user
   selectTask();
 });
 
@@ -42,9 +41,9 @@ function selectTask() {
       }
     ])
     .then(function (answers) {
-      console.log("answers.choice: ", answers.choice);
-      console.log(JSON.stringify(answers, null, '  '));
-      // switch on task to perform
+      //console.log("answers.choice: ", answers.choice);
+      //console.log(JSON.stringify(answers, null, '  '));
+      // Switch on task to perform
       switch(answers.choice) {
           case 'View Product Sales by Department':
               viewProductSales();
@@ -61,20 +60,30 @@ function selectTask() {
 }
 
 function viewProductSales() {
-  console.log("viewProductSales");
-  connection.query("SELECT * FROM `departments`", function(err, results) {
+  //console.log("viewProductSales");
+  connection.query("SELECT department_id, department_name, over_head_costs, product_sales, product_sales - over_head_costs AS total_profits FROM `departments`", function(err, results) {
     if (err) throw err;
-    // Show the products
+    // Show the departments
+    resultArr = [];
+    hdrArr = ['ID', 'Department', 'Overhead', 'Product Sales', 'TOTAL PROFITS'];
     for (var i = 0; i < results.length; i++) {
-      console.log(results[i].department_id + " " + results[i].department_name + " " + results[i].over_head_costs + " "
-                  + results[i].product_sales);
+      // console.table(results[i].department_id + " " + results[i].department_name + " " + results[i].over_head_costs + " "
+      //             + results[i].product_sales + " " + results[i].total_profits);
+      resultArr[i] =  [
+                      results[i].department_id, 
+                      results[i].department_name, 
+                      results[i].over_head_costs, 
+                      results[i].product_sales, 
+                      results[i].total_profits
+                      ] 
     }
+    console.table(hdrArr, resultArr);
     askGoAgain();
   });
 }
 
 function createDepartment() {
-  console.log("createDepartment");
+  //console.log("createDepartment");
   var questions = [
   {
     type: 'input',
@@ -108,7 +117,7 @@ function createDepartment() {
   ]; 
 
   inquirer.prompt(questions).then(function (answers) {
-    console.log(JSON.stringify(answers, null, '  '));
+    //console.log(JSON.stringify(answers, null, '  '));
 
     connection.query(
       "INSERT INTO `departments` SET ?",
@@ -127,7 +136,7 @@ function createDepartment() {
 }
 
 function askGoAgain() {
-  // once you have the items, prompt the user for which they'd like to bid on
+  // See if there are more tasks to perform
   inquirer
     .prompt([
       {

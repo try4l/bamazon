@@ -6,7 +6,7 @@ var currItemId = 0;
 var currOrderQty = 0;
 var currPrice = 0;
 
-// create the connection information for the sql database
+// Connection information for the sql database
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -17,7 +17,7 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
-// connect to the mysql server and sql database
+// Connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
   // After the connection is made, prompt the user
@@ -25,7 +25,7 @@ connection.connect(function(err) {
 });
 
 function getItemId() {
-  // show the user all the items
+  // Show the user all the items
   var query = "SELECT * FROM `products`";  
   connection.query(query, function(err, results) {
     if (err) throw err;
@@ -76,7 +76,6 @@ function getProductQty() {
     .then(function (answers) {
       currOrderQty = parseInt(answers.qty);
       //console.log("currOrderQty: ", currOrderQty);
-      //console.log(answers.qty);
       //console.log(JSON.stringify(answers, null, '  '));
       checkRemainingStock();
     });
@@ -92,11 +91,16 @@ function checkRemainingStock() {
     //console.log("results[0].item_id ", results[0].item_id);  
     if (results[0].stock_quantity>=currOrderQty) {
       //console.log("Sufficient Quantity. ", results[0].stock_quantity);
-      //updateQuantity();
+      // Update the stock_quantity and the procuct_sales info
+      // var query = "UPDATE `products` SET `stock_quantity` = " 
+      //             + "'" + (results[0].stock_quantity - currOrderQty).toString() + "'" 
+      //             + "WHERE `item_id` = " + "'" + currItemId.toString() + "'"; 
+      // 
       var query = "UPDATE `products` SET `stock_quantity` = " 
-                  + "'" + (results[0].stock_quantity - currOrderQty).toString() + "'" 
-                  + "WHERE `item_id` = " + "'" + currItemId.toString() + "'";  
-      //console.log("query: ", query);
+                  + "'" + (results[0].stock_quantity - currOrderQty).toString() + "'"
+                  + ", `product_sales` = "
+                  + "'" + (currPrice * currOrderQty).toString() + "'"
+                  + "WHERE `item_id` = " + "'" + currItemId.toString() + "'";        //console.log("query: ", query);
       connection.query(query, function(err, results) {
         if (err) throw err;
         //console.log("Quantity Updated");

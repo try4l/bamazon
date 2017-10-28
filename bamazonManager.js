@@ -5,7 +5,7 @@ var inquirer = require("inquirer");
 var currItemId = 0;
 var currReorderQty = 0;
 
-// create the connection information for the sql database
+// Connection information for the sql database
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -16,11 +16,10 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 
-// connect to the mysql server and sql database
+// Connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
-  // run the start function after the connection is made to prompt the user
-  //start();
+  // After the connection is made, prompt the user
   selectTask();
 });
 
@@ -71,7 +70,7 @@ function viewProducts() {
     // Show the products
     for (var i = 0; i < results.length; i++) {
       console.log(results[i].item_id + " " + results[i].price + " " + results[i].product_name + " ("
-                  + results[i].stock_quantity + " left)");
+                  + results[i].stock_quantity + " left)" + " Product Sales = " + results[i].product_sales.toFixed(2));
     }
     askGoAgain();
   });
@@ -208,7 +207,7 @@ function addProduct() {
 }
 
 function askGoAgain() {
-  // once you have the items, prompt the user for which they'd like to bid on
+  // See if there are more tasks to perform
   inquirer
     .prompt([
       {
