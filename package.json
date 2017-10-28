@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/try4l/bamazon/issues"
   },
-  "homepage": "https://github.com/try4l/bamazon#readme"
+  "homepage": "https://github.com/try4l/bamazon#readme",
+  "dependencies": {
+    "console.table": "^0.9.1"
+  }
 }

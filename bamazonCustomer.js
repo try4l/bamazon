@@ -20,8 +20,7 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
-  // run the start function after the connection is made to prompt the user
-  //start();
+  // After the connection is made, prompt the user
   getItemId();
 });
 
@@ -30,7 +29,7 @@ function getItemId() {
   var query = "SELECT * FROM `products`";  
   connection.query(query, function(err, results) {
     if (err) throw err;
-    // once you have the items, prompt the user for which they'd like to buy
+    // Once you have the items, prompt the user for which they'd like to buy
     inquirer
       .prompt([
         {
@@ -52,10 +51,6 @@ function getItemId() {
       .then(function (answers) {
         currItemId = answers.choice.split(' ')[0];
         currPrice = answers.choice.split(' ')[1];
-        //console.log("currItemId: ", currItemId);
-        //console.log("currPrice: ", currPrice);
-        //console.log("answers.choice: ", answers.choice);
-        //console.log("answers.choice.split(' ')[0]: ", answers.choice.split(' ')[0]);
         //console.log(JSON.stringify(answers, null, '  '));
         getProductQty();
       });
@@ -87,7 +82,7 @@ function getProductQty() {
     });
 }
 
-function checkRemainingStock () {
+function checkRemainingStock() {
   //console.log("checkRemainingStock: currItemId: ", currItemId, " currOrderQty: ", currOrderQty);
   var query = "SELECT * FROM `products` WHERE `item_id` = " + "'" + currItemId.toString() + "'";  
   connection.query(query, function(err, results) {
@@ -113,44 +108,11 @@ function checkRemainingStock () {
       console.log("Insufficient Quantity Available!");
       askGoAgain();
     }
-    //askGoAgain();
   });
 }
 
-// function updateQuantity () {
-//   console.log("updateQuantity: currItemId: ", currItemId, " currOrderQty: ", currOrderQty);
-//   var query = "UPDATE `products` SET `stock_quantity` = " 
-//               + "'" + (results[0].stock_quantity - currOrderQty).toString() + "'" 
-//               + "WHERE `item_id` = " + "'" + currItemId.toString() + "'";  
-//   //console.log("query: ", query);
-//   connection.query(query, function(err, results) {
-//     if (err) throw err;
-//     // check if there are enough items left
-//     console.log("results: ", results);
-//     askGoAgain(); 
-//   });
-// }
-
-// function calcTotalCost () {
-//   console.log("checkRemainingStock: currItemId: ", currItemId, " currOrderQty: ", currOrderQty);
-//   var query = "SELECT * FROM `products` WHERE `item_id` = " + "'" + currItemId.toString() + "'";  
-//   connection.query(query, function(err, results) {
-//     if (err) throw err;
-//     // check if there are enough items left
-//     console.log("results: ", results); 
-//     console.log("results[0].item_id ", results[0].item_id);  
-//     if (results[0].stock_quantity>=currOrderQty) {
-
-//       console.log("Sufficient Quantity. ", results[0].stock_quantity);
-//     } else {
-//       console.log("Insufficient Quantity Available!");
-//       askGoAgain();
-//     }
-//   });
-// }
-
 function askGoAgain() {
-  // once you have the items, prompt the user for which they'd like to bid on
+  // See if there are more tasks to perform
   inquirer
     .prompt([
       {

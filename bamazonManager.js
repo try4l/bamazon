@@ -77,7 +77,7 @@ function viewProducts() {
   });
 }
 
-function viewLowInventory () {
+function viewLowInventory() {
   console.log("viewLowInventory");
   var query = "SELECT * FROM `products` WHERE `stock_quantity` < '5'";  
   connection.query(query, function(err, results) {
@@ -91,7 +91,7 @@ function viewLowInventory () {
   });
 }
 
-function addInventory () {
+function addInventory() {
   console.log("addInventory");
   var query = "SELECT * FROM `products`";  
   connection.query(query, function(err, results) {
@@ -145,7 +145,7 @@ function addInventory () {
   });
 }
 
-function addProduct () {
+function addProduct() {
   console.log("addProduct");
   var questions = [
   {
