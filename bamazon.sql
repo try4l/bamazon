@@ -8,7 +8,7 @@ CREATE TABLE `products`(
 `department_name` VARCHAR(100),
 `price` DECIMAL(10,2) NOT NULL,
 `stock_quantity` INTEGER(10) NOT NULL,
-`product_sales` DECIMAL(10,2) NOT NULL
+`product_sales` DECIMAL(10,2) NOT NULL DEFAULT 0
 );
 INSERT INTO `products` (product_name, department_name, price, stock_quantity, product_sales)
 VALUES ("Canned Smoked Rattlesnake", "Gourmet Foods", 23.99, 24, 0);

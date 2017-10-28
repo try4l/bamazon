@@ -39,8 +39,8 @@ function selectTask() {
       }
     ])
     .then(function (answers) {
-      console.log("answers.choice: ", answers.choice);
-      console.log(JSON.stringify(answers, null, '  '));
+      //console.log("answers.choice: ", answers.choice);
+      //console.log(JSON.stringify(answers, null, '  '));
       // switch on task to perform
       switch(answers.choice) {
           case 'View Products for Sale':
@@ -64,7 +64,7 @@ function selectTask() {
 }
 
 function viewProducts() {
-  console.log("viewProducts");
+  //console.log("viewProducts");
   connection.query("SELECT * FROM `products`", function(err, results) {
     if (err) throw err;
     // Show the products
@@ -77,21 +77,21 @@ function viewProducts() {
 }
 
 function viewLowInventory() {
-  console.log("viewLowInventory");
+  //console.log("viewLowInventory");
   var query = "SELECT * FROM `products` WHERE `stock_quantity` < '5'";  
   connection.query(query, function(err, results) {
     if (err) throw err;
     // Show the products
     for (var i = 0; i < results.length; i++) {
       console.log(results[i].item_id + " " + results[i].price + " " + results[i].product_name + " (" 
-                  + results[i].stock_quantity + " left)");
+                  + results[i].stock_quantity + " left)" + " Product Sales = " + results[i].product_sales.toFixed(2));
     }
     askGoAgain();
   });
 }
 
 function addInventory() {
-  console.log("addInventory");
+  //console.log("addInventory");
   var query = "SELECT * FROM `products`";  
   connection.query(query, function(err, results) {
     if (err) throw err;
@@ -106,7 +106,7 @@ function addInventory() {
             var choiceArray = [];
             for (var i = 0; i < results.length; i++) {
               chStr = results[i].item_id + " " + results[i].price + " " + results[i].product_name
-                    + " (" + results[i].stock_quantity + " left)";
+                    + " (" + results[i].stock_quantity + " left)" + " Product Sales = " + results[i].product_sales.toFixed(2);
               choiceArray.push(chStr);
             }
             return choiceArray;
@@ -127,7 +127,7 @@ function addInventory() {
         }
       ])
       .then(function (answers) {
-        console.log("answers: ", answers);
+        //console.log("answers: ", answers);
         currItemId = answers.choice.split(' ')[0];
         currReorderQty = parseInt(answers.qty);
         var query = "UPDATE `products` SET `stock_quantity` = `stock_quantity` + " 
@@ -145,7 +145,7 @@ function addInventory() {
 }
 
 function addProduct() {
-  console.log("addProduct");
+  //console.log("addProduct");
   var questions = [
   {
     type: 'input',
@@ -183,12 +183,26 @@ function addProduct() {
       }
     return false;
     }
+  },
+  {
+    type: 'input',
+    name: 'prdSales',
+    message: 'Existing product sales',
+    default: function () {
+      return '0';
+    },
+    validate: function (value) {
+      //console.log("value: ", value);
+      if (isNaN(value)===false) {
+        return true;
+      }
+    return false;
+    }
   }
   ]; 
 
   inquirer.prompt(questions).then(function (answers) {
-    console.log(JSON.stringify(answers, null, '  '));
-
+    //console.log(JSON.stringify(answers, null, '  '));
     connection.query(
       "INSERT INTO `products` SET ?",
       {
@@ -199,7 +213,7 @@ function addProduct() {
       },
       function(err) {
         if (err) throw err;
-        console.log("Did it work?");
+        console.log("Product Added");
         askGoAgain();
       }
     );
