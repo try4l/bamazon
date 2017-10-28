@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/try4l/bamazon#readme",
   "dependencies": {
-    "console.table": "^0.9.1"
+    "console.table": "^0.9.1",
+    "inquirer": "^3.3.0",
+    "mysql": "^2.15.0"
   }
 }
