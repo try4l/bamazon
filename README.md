@@ -4,6 +4,8 @@ MySQL storefront CLI app.
 ![bamazon Video](bamazon1.mov)
 ![bamazon Video](bamazon2.mov)
 
+https://drive.google.com/file/d/0BzKabXC4-69uakRQRFp4SGYtYWM/view?usp=sharing
+
 
 Overview
 
